@@ -1,6 +1,7 @@
 html { scroll-behavior: smooth; }
 
 body { 
+	min-width: 1850px;
     background: #EAEAEA; font-family: Verdana, sans-serif;
 }
 
@@ -596,4 +597,5 @@ p {margin: auto;}
     .article:hover div {
         background: rgba(255, 255, 255, 0.2) !important;
         color: #fff;
+
     }
