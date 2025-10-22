@@ -129,11 +129,11 @@ address {
 
 @media (max-width: 768px) {
   .footer-main {
-    flex-direction: column;
+
   }
   
   .footer-bottom {
-    flex-direction: column;
+
     text-align: center;
   }
   
@@ -142,3 +142,4 @@ address {
   }
 }
 </style>
+
