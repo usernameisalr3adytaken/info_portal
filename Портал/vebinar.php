@@ -1,15 +1,14 @@
-    <?php 
-        include "construct/functions.php";
+<?php 
+    include "construct/functions.php";
+    $selectedTheme = isset($_GET['Theme']) ? $_GET['Theme'] : '';
+    $selectedYear = isset($_GET['Year']) ? $_GET['Year'] : '';
+    $selectedMonth = isset($_GET['Month']) ? $_GET['Month'] : '';
 
-        $selectedTheme = isset($_GET['Theme']) ? $_GET['Theme'] : '';
-        $selectedYear = isset($_GET['Year']) ? $_GET['Year'] : '';
-        $selectedMonth = isset($_GET['Month']) ? $_GET['Month'] : '';
+    $years = getTime2("activities");
+    $Themes = getThemes("activities");
 
-        $years = getTime2("activities");
-        $Themes = getThemes("activities");
-
-        $activities = getWithFilter2("activities", $selectedTheme, $selectedYear, $selectedMonth);
-    ?>
+    $activities = getWithFilter2("activities", $selectedTheme, $selectedYear, $selectedMonth);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -127,4 +126,5 @@
     <?php include("construct/footer.php"); ?>
 
 </body>
+
 </html>
