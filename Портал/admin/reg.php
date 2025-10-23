@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <script src="https://kit.fontawesome.com/01be32f69c.js" crossorigin="anonymous"></script>
-    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+	<script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 </head>
 <body>
     
@@ -23,11 +23,7 @@
                 <input type="text" name="login" class="login-input" placeholder="Введите логин" required> 
                 <h3 style="text-align: center; margin-top: 20px; margin-bottom: 0;">Пароль</h3>
                 <input type="password" name="password" class="login-input" placeholder="Введите пароль" required> 
-                <div class="h-captcha" 
-                    data-sitekey="a6beaef4-76a4-4470-bac2-9d0c4ad447ee"
-                    data-callback="onCaptchaSuccess"
-                    data-expired-callback="onCaptchaExpired">
-                </div>
+                <div class="h-captcha" data-sitekey="fb5cff0a-028a-4bb8-abc0-87b64cec5742"></div>
                 <button onclick="<?php include("../construct/login.php"); ?>" id="loginBtn" class="btn" type="submit" disabled>Войти</button>
             </form>
             <div class="error-message"><?=$errMsg?></div>
@@ -153,3 +149,4 @@
 
 </body>
 </html>
+
