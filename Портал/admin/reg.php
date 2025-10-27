@@ -1,4 +1,5 @@
-﻿
+﻿<?php include("../construct/login.php"); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,8 +24,12 @@
                 <input type="text" name="login" class="login-input" placeholder="Введите логин" required> 
                 <h3 style="text-align: center; margin-top: 20px; margin-bottom: 0;">Пароль</h3>
                 <input type="password" name="password" class="login-input" placeholder="Введите пароль" required> 
-                <div class="h-captcha" data-sitekey="fb5cff0a-028a-4bb8-abc0-87b64cec5742"></div>
-                <button onclick="<?php include("../construct/login.php"); ?>" id="loginBtn" class="btn" type="submit" disabled>Войти</button>
+                <div class="h-captcha" 
+					data-sitekey="fb5cff0a-028a-4bb8-abc0-87b64cec5742"
+					data-callback="onCaptchaSuccess"
+                    data-expired-callback="onCaptchaExpired">
+				</div>
+                <button id="loginBtn" class="btn" type="submit" disabled>Войти</button>
             </form>
             <div class="error-message"><?=$errMsg?></div>
         </div>
@@ -134,14 +139,14 @@
         document.getElementById("loginBtn").disabled = true;
     }
 
-    // (Опционально) Проверка перед отправкой формы
-    document.getElementById("loginBtn").addEventListener("click", function(e) {
-        if (this.disabled) {
+    // Предотвращаем отправку формы, если капча не пройдена
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+        const loginBtn = document.getElementById("loginBtn");
+        if (loginBtn.disabled) {
             e.preventDefault();
             alert("Сначала пройдите капчу!");
             return false;
-        }
-        // Ваш код для входа (например, submit формы)
+		}
     });
     </script>
   
@@ -149,4 +154,5 @@
 
 </body>
 </html>
+
 
