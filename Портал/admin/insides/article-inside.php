@@ -36,7 +36,7 @@
 
         <div style="width: 80%; margin-left: 10%; font-size: 24px;">
             <img 
-                src="<?='../../Info/posts/'. $post['Preview'] ?>"
+                src="<?='../../Info/Posts/'. $post['Preview'] ?>"
                 style="max-width: 100%; max-height: 100%; height: auto; display: block; object-fit: contain;"
             > 
             <div class="only_text" style="width: 100%; margin-top: 40px; margin-bottom: 40px;">
@@ -50,3 +50,4 @@
 
 </body>
 </html>
+
