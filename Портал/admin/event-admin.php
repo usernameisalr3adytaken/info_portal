@@ -1,0 +1,148 @@
+<?php 
+    require_once '../construct/admin_guard.php';
+    include "../construct/functions.php";
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+        $deleteId = intval($_POST['delete_id']);
+        deletePostById($deleteId, "events_"); 
+        header("Location: " . $_SERVER['REQUEST_URI']);
+        exit;
+    }
+
+
+    $selectedTheme = isset($_GET['Theme']) ? $_GET['Theme'] : '';
+    $selectedYear = isset($_GET['Year']) ? $_GET['Year'] : '';
+    $selectedMonth = isset($_GET['Month']) ? $_GET['Month'] : '';
+
+    $years = getTime2("events_");
+    $Themes = getThemes("events_");
+
+    $events = getWithFilter2("events_", $selectedTheme, $selectedYear, $selectedMonth);
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ: Мероприятия</title>
+
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <script src="https://kit.fontawesome.com/01be32f69c.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    
+    <?php include("../construct/Shapka_admin.php"); ?>
+
+    <table style="height: 110px; width: 1690px;">
+        <tr>
+            <td>
+                <div class="filters">
+                    <form action="event-admin.php" method="GET">
+                        <div class="themes">
+                            <p style="margin-left: 20px; padding-top: 15px;"> Формат </p>
+                            <select name="Theme" style="font-size: 20px; width: 160px; margin-left: 20px;" onchange="this.form.submit()">
+                                <option value=""> Все </option>
+                                <?php foreach($Themes as $Theme): ?>
+                                    <option value="<?=$Theme["Theme"]?>" <?= ($Theme["Theme"] === $selectedTheme) ? 'selected' : '' ?>>
+                                        <?=$Theme["Theme"]?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        
+                        <div class="dates">
+                                <p style="margin-left: 20px; padding-top: 10px;"> Дата проведения </p>
+
+                                <p style="margin-left: 20px; margin-top: 15px; font-size: 14px;">Год</p>
+                                    <select name="Year" style="font-size: 20px; width: 160px; margin-left: 20px;" onchange="this.form.submit()">
+                                        <option value=""> Все </option>
+                                        <?php foreach($years as $year): ?>
+                                            <option value="<?=$year?>" <?= ($year == $selectedYear) ? 'selected' : '' ?>>
+                                                <?=$year?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+
+                                <p style="margin-left: 20px; margin-top: 5px; font-size: 14px;">Месяц</p>
+                                    <select name="Month" style="font-size: 20px; width: 160px; margin-left: 20px;"  onchange="this.form.submit()">
+                                        <option value="" > Все </option>
+                                        <?php
+                                            for ($m = 1; $m <= 12; $m++) {
+                                                $monthNames = [1=>'Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+                                                $selected = ($selectedMonth == $m) ? 'selected' : '';
+                                                echo "<option value=\"$m\" $selected>{$monthNames[$m]}</option>";
+                                            }
+                                        ?>
+                                    </select>
+                        </div>
+                    </form>
+                </div>
+            </td>
+
+            <td>
+                <div class="plate">
+                    <h1 style="text-align: center; margin-left: 200px;"> Мероприятия <a href ="create-edit.php">
+                        <img src="../img/plus.png" style="padding-top: 4px; width: 40px; height: 40px; margin-left: 300px;"></a></h1>
+
+                    <?php if (count($events) > 0): ?>
+                    <?php foreach ($events as $event): ?>
+                        <a href = "<?php echo "insides/event-inside.php?event=". $event['Id'] ?>">
+                        <div class="article">
+                                <a href="<?php echo "insides/event-inside.php?event=". $event['Id'] ?>" style="text-decoration: none; display: block;">
+                                    <table class="inside_table" style="width: 100%; border-collapse: collapse; transition: all 0.3s ease;">
+                                        <tr style="transition: all 0.3s ease;">
+                                            <td style="width: 42%; max-width: 45%; height: 300px; vertical-align: top; padding: 0.85%; transition: all 0.3s ease;">
+                                                <img 
+                                                    src="<?='../Info/Events/'. $event['Preview'] ?>" 
+                                                    alt="Изображение статьи" 
+                                                    style="max-width: 100%; max-height: 100%; height: auto; display: block; object-fit: contain; transition: all 0.3s ease;"
+                                                >
+                                            </td>
+                                            <td style="width: 33%; vertical-align: middle; transition: all 0.3s ease;">
+                                                <p style="font-size: 28px; margin-left: 10px; margin-bottom: 20px; color: #333; font-weight: 600; transition: all 0.3s ease;">
+                                                    <?=$event['Title'] ?>
+                                                </p>
+                                                <p style="font-size: 18px; margin-left: 10px; line-height: 1.5; color: #555; transition: all 0.3s ease;">
+                                                    <?=$event['Short'] ?>
+                                                </p>
+                                            </td>
+                                            <td style="width: 25%; vertical-align: middle; transition: all 0.3s ease;">
+                                                <p style="font-size: 86px; text-align: center; margin-left: -5px; color: #333; font-weight: 700; transition: all 0.3s ease;">
+                                                    <?= date('d', strtotime($event["ArrangedAt"])) ?>
+                                                </p>
+                                                <p style="font-size: 30px; text-align: center; margin-left: -5px; color: #555; font-weight: 600; transition: all 0.3s ease;">
+                                                    <? echo rusMonthYear($event["ArrangedAt"]) ?>
+                                                </p>
+
+                                                <a href ="edit/edit-event.php?id=<?=$event['Id'] ?>">
+                                                    <img src="../img/edit.png" style="width: 36px; height: 36px; margin-top: 50px; margin-left: 85px;">
+                                                </a>
+                                                <form method="POST" style="display:inline;" onsubmit="return confirm('Вы уверены, что хотите удалить эту статью?');">
+                                                    <input type="hidden" name="delete_id" value="<?= $event['Id'] ?>">
+                                                    <button type="submit" style="background: none; border: none; padding: 0; margin-top: 20px; margin-left: 10px; cursor: pointer;">
+                                                        <img src="../img/trash.png" style="width: 36px; height: 36px;">
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </a>
+                            </div>
+                        </a>
+                    <?php endforeach; ?>
+                    <?php else: ?>
+                        <p style="text-align: center; font-size: 18px; margin-top: 50px;">По вашему запросу ничего не найдено.</p>
+                    <?php endif; ?>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <?php include("../construct/footer.php"); ?>
+
+
+</body>
+</html>
